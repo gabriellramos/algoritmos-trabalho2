@@ -1,6 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
-int processes[100][4], NP, quantum, scheduler[1000],WT[100];
+#include<locale.h>
+
+int processes[100][4], NP, quantum, scheduler[1000],WT[100], teste=1;
+FILE *file;
+
 unsigned int time = 0;
 typedef struct el
 {
@@ -13,10 +17,11 @@ Q * qeue = NULL;
 void getSystem(){
 	int i;
 	
+	
 	for(i=0; i<NP; i++ )
 	{
 		//printf("\n Arrival Time of p%d: ", i);
-		scanf("%d %d", &processes[i][0], &processes[i][1]);
+		fscanf(file,"%d %d", &processes[i][0], &processes[i][1]);
 		//printf("\n Burst time for p%d: ", i);
 		processes[i][2] = processes[i][1];
 		//printf("\n-----------");
@@ -24,24 +29,6 @@ void getSystem(){
 	
 }
 
-void printSystem()
-{
-	int i;
-	printf("\n\t\tOur System is :");
-	printf("\nQuantum: %d",quantum);
-//	printf("\nPi:  AT  BT RT  TF");
-	/*for(i=0; i<NP; i++)
-	{
-		printf("\nP%d:  %d  %d  %d  %d", i, processes[i][0], processes[i][1], processes[i][2], processes[i][3]);
-	}
-	*/
-	printf("\nThe qeue: ");
-	Q *n;
-	for(n=qeue; n!=NULL; n=n->next)
-	{
-		printf("P%d ",n->p);
-	}
-}
 unsigned int executionRemained()
 {
 	int i;
@@ -135,38 +122,28 @@ void schedule()
 			
 			processes[np][3] = time;
 		}
-		
-		
-	//	printSystem();
-		int x;
-		
 	}
 }
 void printScheduling()
 {
-	int i;
-	printf("\n\nScheduling: \n");
+	int i, j, k;
 	for(i=0; i<time; i++)
 	{
 		if (scheduler[i]!=-1){
 			printf("P%d " ,scheduler[i]+1);
+			
+			j=1;k=i+1;
+			while(scheduler[k++]==scheduler[i]){
+				j++;
+				if (j==quantum) break;
+			}
+			
+			if (j>1)
+				i+=j-1;
+			
 		}
-		//printf(" (P%d) ",scheduler[i]);
 	}
-	printf("\n\nWaiting Time: \n");
-	for(i=0; i<NP; i++)
-	{ 
-		printf("\nP%d: %d", i, WT[i]);
-	}
-	//counting Average Waiting Time...
-	float AWT = 0.0;
-	for(i=0; i<NP; i++)
-	{
-		AWT = AWT+WT[i];
-	}
-	AWT = AWT/NP;
-	printf("\n\nAverage Waiting Time: %f", AWT);
-	
+	printf ("\n\n");
 }
 void WatingTime()
 {
@@ -180,6 +157,14 @@ void WatingTime()
 		
 		WT[i] = processes[i][3] - (processes[i][0] + processes[i][1]);
 	}
+	
+	float AWT = 0.0;
+	for(i=0; i<NP; i++)
+	{
+		AWT = AWT+WT[i];
+	}
+	AWT = AWT/NP;
+	printf("Tempo médio de execução: %f\n", AWT);
 }
 
 void turnaround()
@@ -191,20 +176,44 @@ void turnaround()
 	}
 	
 	tmr = tmr/NP;
-	printf ("Turnaround: %f\n", tmr);
+	printf ("Tempo médio de espera: %f\n", tmr);
 }
 
-main()
+void zeraProcessos()
 {
-	scanf("%d", &quantum);
+	int i, j;
+	
+	//zerando processos
+	for (i=0; i<NP; i++){
+		for (j=0;j<4; j++){
+			processes[i][j] = 0;
+		}
+		WT[i]=0;
+	}
+	
+	//zerando timeline
+	for (i=0;i<time;i++)
+		scheduler[i] = 0;
+	
+	time = 0;
+}
+
+
+int main()
+{
+	setlocale(LC_ALL,"portuguese");
+	file = fopen("casos-teste.txt", "r");
+	fscanf(file, "%d", &quantum);
 	while(1){
-		scanf("%d", &NP);
+		fscanf(file,"%d", &NP);
 		if (NP == 0) break;
-		getSystem();
-		printSystem();
+		getSystem(); // pode alterar o tipo da entrada
 		schedule();
+		printf ("Teste %d\n", teste++);
 		WatingTime();
 		turnaround();
 		printScheduling();
+		zeraProcessos();
 	}
+	return 0;
 }
