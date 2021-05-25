@@ -100,6 +100,40 @@ int main(){
 			int *idRR = (int*) malloc (nProcessosRR*sizeof(int));
 			int *tFinalRR = (int*) malloc (nProcessosRR*sizeof(int));
 			
+<<<<<<< HEAD
+=======
+			j = 0;
+			for (k=0; k<nProcessosRR; k++){
+				
+				
+				if (j==qtdProcessos) j = 0;
+				VOLTA:
+				
+				while (tRestante[j]==0){
+					j++;
+				}
+				int tempoOcioso= 0;
+				idRR[k] = id[j];
+				if (tempoDeInicio[j]>tempoDeExecucao){
+					j = 0;
+					goto VOLTA;
+				}
+				
+				if (tRestante[j] <= quantum && tRestante[j]>0){
+					tFinalRR[k] = tRestante[j];
+					tRestante[j] -= tRestante[j];
+				}else if (tRestante[j]>quantum){
+					tFinalRR[k] = quantum;
+					tRestante[j] -= quantum;
+				}
+				
+				if (tRestante[j]==0){
+					tempoFinal[j] = tFinalRR[k];
+				}
+				if (j<qtdProcessos) j++;
+				
+			}
+>>>>>>> 19ac0a8b0403f5fe3c322fa10758b3b39060add3
 		
 			for (i = 0; i<nProcessosRR; i++){
 				printf("P%d ", idRR[i]);

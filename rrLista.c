@@ -220,7 +220,11 @@ void rr (Processos* listaPronto, Processos* listaExecucao, int quantum){
 		}
 		else {
 			atual = atual->prox;
+<<<<<<< HEAD
 			listaPronto->processosEmFila = atual->instanteInicio <= listaExecucao->tExecucaoProcessamento ? 1 : 0;
+=======
+			listaPronto->processosEmFila += atual->instanteInicio <= listaExecucao->tExecucaoProcessamento ? 1 : 0;
+>>>>>>> 19ac0a8b0403f5fe3c322fa10758b3b39060add3
 		}
 		
 		atual = atual->prox;
@@ -230,6 +234,7 @@ void rr (Processos* listaPronto, Processos* listaExecucao, int quantum){
 		
 		
 	}
+<<<<<<< HEAD
 	printf("\n");
 	saidaEscalonamento(listaExecucao->primeiro);	
 	printf("\n");
@@ -258,6 +263,22 @@ void insereProcessoNoQuantum(ProcessoElem* atual, Processos* listaExecucao, int 
 		i0 = atual->instanteInicio;
 		i = atual->tempoRestante;
 		inserirProcesso(listaExecucao, criaProcesso(id,i0, i));
+=======
+	saidaEscalonamento(listaExecucao->primeiro);	
+}
+
+void insereProcessoNoQuantum(ProcessoElem* atual, Processos* listaExecucao, int quantum){
+	//inserir processo quantum
+	if (atual->tempoRestante == quantum){
+		inserirProcesso(listaExecucao, criaProcesso(atual->id, atual->instanteInicio, quantum));
+		atual->tempoRestante -= quantum;
+		atual->statusFinal=1;
+	}else if (atual->tempoRestante > quantum) { 
+		inserirProcesso(listaExecucao, criaProcesso(atual->id, atual->instanteInicio, quantum));
+		atual->tempoRestante -= quantum;
+	}else{
+		inserirProcesso(listaExecucao, criaProcesso(atual->id, atual->instanteInicio, atual->tempoRestante));
+>>>>>>> 19ac0a8b0403f5fe3c322fa10758b3b39060add3
 		atual->tempoRestante -= atual->tempoRestante;
 		atual->statusFinal = 1;
 	}

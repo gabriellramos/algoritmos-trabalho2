@@ -6,5 +6,9 @@ vendor/
 *.so
 *.exe
 # Para todos os arquivos e sub-pastas localizados na pasta bower_components/
+<<<<<<< HEAD
 bower_components/
 *.ini
+=======
+bower_components/
+>>>>>>> 19ac0a8b0403f5fe3c322fa10758b3b39060add3
