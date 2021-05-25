@@ -1,0 +1,10 @@
+# Para todos os arquivos e sub-pastas localizados na pasta vendor/
+vendor/
+# Para arquivos Java compilados
+*.class
+# Para código C
+*.so
+*.exe
+# Para todos os arquivos e sub-pastas localizados na pasta bower_components/
+bower_components/
+*.ini
