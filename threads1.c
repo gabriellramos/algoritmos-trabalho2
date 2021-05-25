@@ -29,8 +29,7 @@ int main(int argc, char *argv[]){
 	
 	status = pthread_create(&threads1, NULL, numeroCrescente, (void*)1);
 	status = pthread_create(&threads2, NULL, numeroDecrescente, (void*)2);
-	
-	//pthread_join(threads1, NULL);
+
 	pthread_join(threads2, NULL);
 	
 
